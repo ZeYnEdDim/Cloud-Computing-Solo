@@ -1,0 +1,5 @@
+en Main_Page 42 50043
+en.m Special:Search 18 12000
+de Wikipedia:Hauptseite 12 9033
+fr Accueil 9 8201
+commons File:Example.jpg 5 2300
