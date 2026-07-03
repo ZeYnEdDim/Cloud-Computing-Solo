@@ -7,9 +7,10 @@ REDUCERS="${2:-4}"
 INPUT="${3:-/user/hadoop/single_project/input/pageviews_24h}"
 INTERMEDIATE="${4:-/user/hadoop/single_project/intermediate/pageviews_etl}"
 OUTPUT="${5:-/user/hadoop/single_project/output/pageviews_analytics}"
-TOP_N="${6:-20}"
+TOP_N="${6:-10}"
 
-hadoop jar "$JAR" it.unipi.solo.WikimediaPageviewAnalytics \
+/opt/hadoop/bin/hadoop jar "$JAR" \
   "$REDUCERS" "$INPUT" "$INTERMEDIATE" "$OUTPUT" "$TOP_N"
 
-hdfs dfs -ls "$OUTPUT"
+/opt/hadoop/bin/hdfs dfs -ls "$OUTPUT"
+

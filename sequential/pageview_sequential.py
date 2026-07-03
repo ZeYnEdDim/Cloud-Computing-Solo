@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Sequential baseline for Wikimedia pageview analytics."""
 
 import argparse
@@ -86,6 +86,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sequential Wikimedia pageview analytics")
     parser.add_argument("--input", required=True, help="Input file or directory containing pageviews files")
     parser.add_argument("--output", required=True, help="Output JSON path")
-    parser.add_argument("--top-n", type=int, default=20)
+    parser.add_argument("--top-n", type=int, default=10)
     args = parser.parse_args()
     run(args.input, args.output, args.top_n)
+

@@ -1,0 +1,3 @@
+2026-07-03 13:21:34,474 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2026-07-03 13:21:35,329 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+Running 2h reducer benchmark with 1 reducers

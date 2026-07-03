@@ -1,0 +1,29 @@
+2026-07-03 13:03:56,722 INFO client.RMProxy: Connecting to ResourceManager at hadoop-namenode/10.1.1.123:8032
+2026-07-03 13:03:57,335 INFO conf.Configuration: resource-types.xml not found
+2026-07-03 13:03:57,336 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+Application Report : 
+	Application-Id : application_1783069251327_0013
+	Application-Name : Job 2: Pageview Analytics
+	Application-Type : MAPREDUCE
+	User : hadoop
+	Queue : default
+	Application Priority : 0
+	Start-Time : 1783083148318
+	Finish-Time : 1783083831835
+	Progress : 100%
+	State : FINISHED
+	Final-State : FAILED
+	Tracking-URL : http://hadoop-namenode:19888/jobhistory/job/job_1783069251327_0013
+	RPC Port : 46511
+	AM Host : hadoop-datanode-2
+	Aggregate Resource Allocation : 2363764 MB-seconds, 1979 vcore-seconds
+	Aggregate Resource Preempted : 0 MB-seconds, 0 vcore-seconds
+	Log Aggregation Status : DISABLED
+	Diagnostics : Task failed task_1783069251327_0013_r_000003
+Job failed as tasks failed. failedMaps:0 failedReduces:1 killedMaps:0 killedReduces: 0
+
+	Unmanaged Application : false
+	Application Node Label Expression : <Not set>
+	AM container Node Label Expression : <DEFAULT_PARTITION>
+	TimeoutType : LIFETIME	ExpiryTime : UNLIMITED	RemainingTime : -1seconds
+

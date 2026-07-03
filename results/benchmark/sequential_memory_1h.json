@@ -1,0 +1,95 @@
+{
+  "summary": {
+    "total_views": 15459276
+  },
+  "top_projects_by_views": [
+    {
+      "project": "en.m",
+      "views": 5344906
+    },
+    {
+      "project": "en",
+      "views": 3007383
+    },
+    {
+      "project": "zh",
+      "views": 706567
+    },
+    {
+      "project": "ja.m",
+      "views": 698698
+    },
+    {
+      "project": "es.m",
+      "views": 504150
+    },
+    {
+      "project": "ja",
+      "views": 345676
+    },
+    {
+      "project": "fr.m",
+      "views": 311375
+    },
+    {
+      "project": "ru.m",
+      "views": 271529
+    },
+    {
+      "project": "de.m",
+      "views": 232317
+    },
+    {
+      "project": "it.m",
+      "views": 228126
+    }
+  ],
+  "top_pages_by_views": [
+    {
+      "page": "en|Main_Page",
+      "views": 132524
+    },
+    {
+      "page": "en.m|Main_Page",
+      "views": 83818
+    },
+    {
+      "page": "commons.m|-",
+      "views": 40934
+    },
+    {
+      "page": "en|Nahui_Ollin",
+      "views": 38512
+    },
+    {
+      "page": "en|Special:Search",
+      "views": 19453
+    },
+    {
+      "page": "\"\"|-",
+      "views": 15992
+    },
+    {
+      "page": "ja|\u30e1\u30a4\u30f3\u30da\u30fc\u30b8",
+      "views": 15715
+    },
+    {
+      "page": "hif|khaas:RecentChanges",
+      "views": 14920
+    },
+    {
+      "page": "en.m|David_Allan_Coe",
+      "views": 14697
+    },
+    {
+      "page": "zh|-",
+      "views": 13428
+    }
+  ],
+  "views_by_hour": [
+    {
+      "hour": "20260501-00",
+      "views": 15459276
+    }
+  ]
+}

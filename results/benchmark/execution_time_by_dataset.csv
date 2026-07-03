@@ -1,0 +1,4 @@
+dataset,hadoop_reducers,hadoop_time_seconds,sequential_time_seconds
+1h,4,117,20
+4h,4,295,75
+8h,4,583,154

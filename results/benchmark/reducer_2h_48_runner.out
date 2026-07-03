@@ -1,0 +1,3 @@
+Running 2h reducer benchmark with 4 reducers
+Running 2h reducer benchmark with 8 reducers
+2h reducer benchmark 4/8 completed. Results: /home/hadoop/single_project/results/benchmark/execution_time_by_reducers_2h.csv

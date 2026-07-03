@@ -8,7 +8,8 @@ TARGET_DIR="${2:-/home/hadoop/single_project/data/pageviews_${HOURS}h}"
 
 mkdir -p "$TARGET_DIR"
 
-for hour in $(seq -w 0 $((HOURS - 1))); do
+for i in $(seq 0 $((HOURS - 1))); do
+  hour=$(printf "%02d" "$i")
   file="pageviews-${DAY}-${hour}0000.gz"
   url="${BASE_URL}/${file}"
   if [ ! -f "${TARGET_DIR}/${file}" ]; then

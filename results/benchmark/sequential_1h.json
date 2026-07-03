@@ -1,0 +1,175 @@
+{
+  "summary": {
+    "total_views": 15459276
+  },
+  "top_projects_by_views": [
+    {
+      "project": "en.m",
+      "views": 5344906
+    },
+    {
+      "project": "en",
+      "views": 3007383
+    },
+    {
+      "project": "zh",
+      "views": 706567
+    },
+    {
+      "project": "ja.m",
+      "views": 698698
+    },
+    {
+      "project": "es.m",
+      "views": 504150
+    },
+    {
+      "project": "ja",
+      "views": 345676
+    },
+    {
+      "project": "fr.m",
+      "views": 311375
+    },
+    {
+      "project": "ru.m",
+      "views": 271529
+    },
+    {
+      "project": "de.m",
+      "views": 232317
+    },
+    {
+      "project": "it.m",
+      "views": 228126
+    },
+    {
+      "project": "pt.m",
+      "views": 218940
+    },
+    {
+      "project": "commons.m",
+      "views": 213812
+    },
+    {
+      "project": "es",
+      "views": 209016
+    },
+    {
+      "project": "zh.m",
+      "views": 190745
+    },
+    {
+      "project": "fr",
+      "views": 172133
+    },
+    {
+      "project": "de",
+      "views": 164036
+    },
+    {
+      "project": "www.wd",
+      "views": 148863
+    },
+    {
+      "project": "ru",
+      "views": 147078
+    },
+    {
+      "project": "ar.m",
+      "views": 125085
+    },
+    {
+      "project": "pt",
+      "views": 94107
+    }
+  ],
+  "top_pages_by_views": [
+    {
+      "page": "en|Main_Page",
+      "views": 132524
+    },
+    {
+      "page": "en.m|Main_Page",
+      "views": 83818
+    },
+    {
+      "page": "commons.m|-",
+      "views": 40934
+    },
+    {
+      "page": "en|Nahui_Ollin",
+      "views": 38512
+    },
+    {
+      "page": "en|Special:Search",
+      "views": 19453
+    },
+    {
+      "page": "\"\"|-",
+      "views": 15992
+    },
+    {
+      "page": "ja|\u30e1\u30a4\u30f3\u30da\u30fc\u30b8",
+      "views": 15715
+    },
+    {
+      "page": "hif|khaas:RecentChanges",
+      "views": 14920
+    },
+    {
+      "page": "en.m|David_Allan_Coe",
+      "views": 14697
+    },
+    {
+      "page": "zh|-",
+      "views": 13428
+    },
+    {
+      "page": "en.m|Special:Search",
+      "views": 12838
+    },
+    {
+      "page": "es|Wikipedia:Portada",
+      "views": 10087
+    },
+    {
+      "page": "de|Wikipedia:Hauptseite",
+      "views": 9918
+    },
+    {
+      "page": "ja.m|\u30e9\u30f4\u30ec\u30f3\u30c1\u30fc\u30fb\u30d9\u30ea\u30e4",
+      "views": 9444
+    },
+    {
+      "page": "ja.m|\u5185\u6751\u5149\u826f",
+      "views": 9288
+    },
+    {
+      "page": "es.m|Wikipedia:Portada",
+      "views": 8750
+    },
+    {
+      "page": "en.m|Wikipedia:Featured_pictures",
+      "views": 8686
+    },
+    {
+      "page": "fr|Wikip\u00e9dia:Accueil_principal",
+      "views": 7981
+    },
+    {
+      "page": "ja.m|\u30e1\u30a4\u30f3\u30da\u30fc\u30b8",
+      "views": 7954
+    },
+    {
+      "page": "en.m|Michael_Jackson",
+      "views": 7845
+    }
+  ],
+  "views_by_hour": [
+    {
+      "hour": "20260501-00",
+      "views": 15459276
+    }
+  ]
+}

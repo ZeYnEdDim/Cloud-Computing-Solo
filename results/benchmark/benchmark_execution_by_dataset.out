@@ -1,0 +1,5 @@
+Running execution-time dataset benchmark: 1h
+Running execution-time dataset benchmark: 4h
+Running execution-time dataset benchmark: 8h
+Completed. Successful results: /home/hadoop/single_project/results/benchmark/execution_time_by_dataset.csv
+Failed runs, if any: /home/hadoop/single_project/results/benchmark/failed_runs_execution_by_dataset.csv

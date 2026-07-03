@@ -1,4 +1,4 @@
-package it.unipi.solo;
+﻿package it.unipi.solo;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -169,7 +169,7 @@ public class WikimediaPageviewAnalytics {
 
         @Override
         protected void setup(Context context) {
-            topN = context.getConfiguration().getInt("analytics.top.n", 20);
+            topN = context.getConfiguration().getInt("analytics.top.n", 10);
         }
 
         @Override
@@ -187,7 +187,7 @@ public class WikimediaPageviewAnalytics {
                 projectViews.put(project, projectViews.getOrDefault(project, 0L) + sum);
             } else if (metric.startsWith("PAGE:")) {
                 String page = metric.substring("PAGE:".length());
-                pageViews.put(page, pageViews.getOrDefault(page, 0L) + sum);
+                addTopCandidate(pageViews, page, sum, topN);
             } else if (metric.startsWith("HOUR:")) {
                 String hour = metric.substring("HOUR:".length());
                 hourViews.put(hour, hourViews.getOrDefault(hour, 0L) + sum);
@@ -209,6 +209,31 @@ public class WikimediaPageviewAnalytics {
             context.write(NullWritable.get(), new Text(json.toString()));
         }
 
+        private void addTopCandidate(Map<String, Long> map, String key, long value, int n) {
+            if (map.containsKey(key)) {
+                map.put(key, map.get(key) + value);
+                return;
+            }
+
+            if (map.size() < n) {
+                map.put(key, value);
+                return;
+            }
+
+            String minKey = null;
+            long minValue = Long.MAX_VALUE;
+            for (Map.Entry<String, Long> entry : map.entrySet()) {
+                if (entry.getValue() < minValue) {
+                    minKey = entry.getKey();
+                    minValue = entry.getValue();
+                }
+            }
+
+            if (minKey != null && value > minValue) {
+                map.remove(minKey);
+                map.put(key, value);
+            }
+        }
         private String getTopNJson(Map<String, Long> map, int n, String keyName, String valueName) {
             List<Map.Entry<String, Long>> entries = new ArrayList<>(map.entrySet());
             entries.sort((a, b) -> b.getValue().compareTo(a.getValue()));
@@ -263,10 +288,10 @@ public class WikimediaPageviewAnalytics {
 
         Configuration conf = new Configuration();
         conf.setInt("analytics.top.n", topN);
-        conf.set("mapreduce.map.memory.mb", "1024");
-        conf.set("mapreduce.map.java.opts", "-Xmx768m");
-        conf.set("mapreduce.reduce.memory.mb", "1024");
-        conf.set("mapreduce.reduce.java.opts", "-Xmx768m");
+        conf.set("mapreduce.map.memory.mb", "1536");
+        conf.set("mapreduce.map.java.opts", "-Xmx1024m");
+        conf.set("mapreduce.reduce.memory.mb", "1536");
+        conf.set("mapreduce.reduce.java.opts", "-Xmx1024m");
 
         FileSystem fs = FileSystem.get(conf);
         Path intermediate = new Path(intermediatePath);
@@ -311,3 +336,5 @@ public class WikimediaPageviewAnalytics {
         System.exit(job2.waitForCompletion(true) ? 0 : 1);
     }
 }
+
+

@@ -1,0 +1,4 @@
+dataset,hadoop_reducers,hadoop_avg_allocated_mb,hadoop_allocated_mb_seconds,sequential_peak_rss_mb
+1h,4,2277.53,264193,991.88
+4h,4,3051.64,933801,2235.91
+8h,4,3334.44,1983990,3974.96
