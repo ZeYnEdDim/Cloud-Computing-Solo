@@ -1,2 +1,0 @@
-benchmark,dataset,reducers,status,elapsed_seconds,log_file
-execution_by_dataset,16h,sequential,failed,2245,/home/hadoop/single_project/results/benchmark/logs/execution_dataset_16h_sequential.log

@@ -1,5 +1,0 @@
-dataset,reducers,hadoop_time_seconds,hadoop_avg_allocated_mb,hadoop_allocated_mb_seconds,status
-2h,1,N/A,N/A,N/A,failed_java_heap_space
-2h,2,N/A,N/A,N/A,failed_java_heap_space
-2h,4,N/A,N/A,N/A,failed
-2h,8,N/A,N/A,N/A,failed
