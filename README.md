@@ -1,6 +1,6 @@
 # Cloud Computing Solo Project - Wikimedia Pageview Analytics
 
-This project is the single-student version of the Cloud Computing final project. It implements a Hadoop MapReduce analytics workflow over Wikimedia hourly pageview dumps.
+Single-student Cloud Computing project based on Hadoop MapReduce and a Python non-parallel baseline. The project analyzes Wikimedia hourly pageview dumps and compares Hadoop execution with sequential local execution.
 
 ## Dataset
 
@@ -11,12 +11,9 @@ https://dumps.wikimedia.org/other/pageviews/2026/2026-05/
 Selected data:
 
 - Day: 2026-05-01
-- Files: `pageviews-20260501-000000.gz` to `pageviews-20260501-230000.gz`
-- Full input size target: around 1-1.5 GB compressed
-- Benchmark subsets:
-  - 8 hourly files
-  - 16 hourly files
-  - 24 hourly files
+- Format: hourly compressed Wikimedia pageview files
+- Main benchmark subsets: 1h, 4h, and 8h
+- Additional stress test: 16h
 
 Each input line has the following format:
 
@@ -36,7 +33,7 @@ The Hadoop implementation is composed of two non-iterative MapReduce jobs in cas
 
 ### Job 1 - ETL and Classification
 
-The first job parses raw Wikimedia pageview records and emits structured `PageviewRecord` objects using a custom Hadoop `Writable`.
+The first job parses raw Wikimedia pageview records and writes a structured intermediate dataset using a custom Hadoop `Writable`.
 
 It performs:
 
@@ -54,22 +51,23 @@ It computes:
 
 - total views;
 - total response bytes;
-- top projects by views;
-- top pages by views;
+- top 10 projects by views;
+- top 10 pages by views;
 - views by hour;
 - mobile vs desktop traffic;
 - top projects by response bytes.
 
-Advanced Hadoop features used:
+Hadoop features used:
 
 - two MapReduce jobs in cascade;
+- Java implementation;
 - custom `Writable`;
 - in-mapper combining;
 - custom partitioner;
 - `setup()` and `cleanup()` methods;
 - multiple reducers.
 
-## Local Project Structure
+## Project Structure
 
 ```text
 hadoop-pageviews/
@@ -82,117 +80,202 @@ scripts/
   put_pageviews_hdfs.sh
   run_hadoop_pageviews.sh
   run_sequential_pageviews.sh
-results/
+  benchmark_execution_by_dataset.sh
+  benchmark_execution_by_reducers.sh
+  benchmark_memory_by_dataset.sh
+  fetch_benchmark_results.ps1
+  plot_benchmark_results.py
+results/benchmark/
+  execution_time_by_dataset.csv
+  execution_time_by_reducers.csv
+  memory_by_dataset.csv
+  plots/
+docs/
+  documentation.tex
+  documentation.pdf
+presentation/
+  Cloud_Computing_Solo_Project_Presentation.pptx
 ```
 
-## VM Project Structure
+## VM and HDFS Paths
 
-On the VM, use a separate folder so this project does not conflict with the previous group project:
+On the VM, the project is stored under:
 
 ```bash
 /home/hadoop/single_project
 ```
 
-Recommended HDFS paths:
+Main HDFS base path:
 
 ```bash
+/user/hadoop/single_project
+```
+
+Typical HDFS paths:
+
+```bash
+/user/hadoop/single_project/input/pageviews_1h
+/user/hadoop/single_project/input/pageviews_4h
 /user/hadoop/single_project/input/pageviews_8h
-/user/hadoop/single_project/input/pageviews_16h
-/user/hadoop/single_project/input/pageviews_24h
-/user/hadoop/single_project/intermediate/pageviews_etl
-/user/hadoop/single_project/output/pageviews_analytics
+/user/hadoop/single_project/intermediate/...
+/user/hadoop/single_project/output/...
 ```
 
 ## Setup on VM
 
-Copy this project to the VM under:
-
-```bash
-/home/hadoop/single_project
-```
-
-Make scripts executable:
+Copy the project to the VM under `/home/hadoop/single_project`, then run:
 
 ```bash
 chmod +x /home/hadoop/single_project/scripts/*.sh
-```
-
-Build the Hadoop project:
-
-```bash
 cd /home/hadoop/single_project/hadoop-pageviews
 mvn clean package
 ```
 
-## Download Dataset
+## Running Hadoop MapReduce
 
-Download 24 hourly files:
-
-```bash
-/home/hadoop/single_project/scripts/download_pageviews.sh 24 /home/hadoop/single_project/data/pageviews_24h
-```
-
-For smaller benchmark subsets:
-
-```bash
-/home/hadoop/single_project/scripts/download_pageviews.sh 8 /home/hadoop/single_project/data/pageviews_8h
-/home/hadoop/single_project/scripts/download_pageviews.sh 16 /home/hadoop/single_project/data/pageviews_16h
-```
-
-## Upload Dataset to HDFS
-
-```bash
-/home/hadoop/single_project/scripts/put_pageviews_hdfs.sh \
-  /home/hadoop/single_project/data/pageviews_24h \
-  /user/hadoop/single_project/input/pageviews_24h
-```
-
-## Run Hadoop MapReduce
+Example run with 4 reducers:
 
 ```bash
 /home/hadoop/single_project/scripts/run_hadoop_pageviews.sh \
   /home/hadoop/single_project/hadoop-pageviews \
   4 \
-  /user/hadoop/single_project/input/pageviews_24h \
-  /user/hadoop/single_project/intermediate/pageviews_etl \
-  /user/hadoop/single_project/output/pageviews_analytics \
-  20
+  /user/hadoop/single_project/input/pageviews_8h \
+  /user/hadoop/single_project/intermediate/pageviews_etl_8h \
+  /user/hadoop/single_project/output/pageviews_analytics_8h \
+  10
 ```
 
 Display output:
 
 ```bash
-hdfs dfs -cat /user/hadoop/single_project/output/pageviews_analytics/part-r-*
+hdfs dfs -cat /user/hadoop/single_project/output/pageviews_analytics_8h/part-r-*
 ```
 
-## Run Sequential Baseline
+## Running Sequential Baseline
 
 ```bash
 /home/hadoop/single_project/scripts/run_sequential_pageviews.sh \
-  /home/hadoop/single_project/data/pageviews_24h \
-  /home/hadoop/single_project/results/sequential_pageviews.json \
-  20
+  /home/hadoop/single_project/data/pageviews_8h \
+  /home/hadoop/single_project/results/benchmark/sequential_8h.json \
+  10
 ```
 
-## Experimental Evaluation Plan
+## Benchmarks
 
-Recommended experiments:
+The final experiments are separated into three scripts.
 
-1. Execution time vs dataset size:
-   - 8 hourly files;
-   - 16 hourly files;
-   - 24 hourly files.
+### 1. Execution Time by Dataset Size
 
-2. Hadoop configuration impact:
-   - reducers = 1, 2, 4, 8.
+Parameters:
 
-3. Comparison against sequential Python baseline.
+- datasets: 1h, 4h, 8h;
+- Hadoop reducers: 4;
+- sequential baseline: same input data.
 
-4. Optional resource metrics:
-   - memory usage;
-   - CPU utilization;
-   - YARN elapsed time.
+Run on VM:
 
-## Report Focus
+```bash
+cd /home/hadoop/single_project
+./scripts/benchmark_execution_by_dataset.sh
+```
 
-The final report should focus on Hadoop MapReduce as the core implementation. The sequential Python version is used only as a non-parallel baseline for comparison.
+Final results:
+
+| Dataset | Hadoop, 4 reducers (s) | Sequential (s) |
+|---|---:|---:|
+| 1h | 117 | 20 |
+| 4h | 295 | 75 |
+| 8h | 583 | 154 |
+
+A 16h stress test was also executed. Hadoop completed in about 1151 seconds, while the sequential process was killed after about 2245 seconds because of memory pressure.
+
+### 2. Execution Time by Reducers
+
+Parameters:
+
+- dataset: 4h;
+- reducers: 1, 2, 4, 8;
+- Hadoop only.
+
+Run on VM:
+
+```bash
+cd /home/hadoop/single_project
+./scripts/benchmark_execution_by_reducers.sh
+```
+
+Final results:
+
+| Reducers | Hadoop time (s) |
+|---:|---:|
+| 1 | 270 |
+| 2 | 306 |
+| 4 | 308 |
+| 8 | 319 |
+
+### 3. Memory Usage by Dataset Size
+
+Parameters:
+
+- datasets: 1h, 4h, 8h;
+- Hadoop reducers: 4;
+- sequential baseline: same input data.
+
+Run on VM:
+
+```bash
+cd /home/hadoop/single_project
+./scripts/benchmark_memory_by_dataset.sh
+```
+
+Final results:
+
+| Dataset | Hadoop avg allocated MB | Sequential peak RSS MB |
+|---|---:|---:|
+| 1h | 2277.53 | 991.88 |
+| 4h | 3051.64 | 2235.91 |
+| 8h | 3334.44 | 3974.96 |
+
+Note: Hadoop memory is measured as average YARN allocated memory, while sequential memory is measured as peak process RSS. They are useful for trend comparison, but they are not exactly the same metric.
+
+## Fetching Results and Creating Plots
+
+From the local machine:
+
+```powershell
+cd "C:\Users\BAKU\Desktop\University\Projects\Cloud Computing Solo"
+powershell -ExecutionPolicy Bypass -File ".\scripts\fetch_benchmark_results.ps1"
+python ".\scripts\plot_benchmark_results.py"
+```
+
+Generated plots:
+
+```text
+results/benchmark/plots/execution_time_by_dataset.png
+results/benchmark/plots/execution_time_by_reducers.png
+results/benchmark/plots/memory_by_dataset.png
+```
+
+## Documentation and Presentation
+
+The final documentation is available at:
+
+```text
+docs/documentation.pdf
+```
+
+The LaTeX source is:
+
+```text
+docs/documentation.tex
+```
+
+The project presentation is available at:
+
+```text
+presentation/Cloud_Computing_Solo_Project_Presentation.pptx
+```
+
+## Main Conclusion
+
+On small and medium datasets, the Python sequential baseline is faster because the single-VM pseudo-distributed Hadoop setup introduces startup, shuffle, and HDFS I/O overhead. However, the 16h stress test shows the scalability limit of the sequential approach: Hadoop completes, while the Python process is killed under memory pressure.
