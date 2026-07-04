@@ -210,13 +210,13 @@ setup(context):
     inputHour = extract hour from current input filename
 
 map(offset, line):
-    fields = split line into project, page, views, bytes
+    fields = split line into project, page, views, responseSize
     if fields are malformed:
         skip line
     if views cannot be parsed or views <= 0:
         skip line
 
-    record = PageviewRecord(project, page, inputHour, views)
+    record = PageviewRecord(project, page, inputHour, views)  // responseSize is ignored
     emit(NullWritable, record)
 \end{verbatim}
 
@@ -477,3 +477,4 @@ The reducer benchmark shows that increasing the number of reducers does not auto
 Overall, Hadoop MapReduce provides better robustness for larger workloads, while the sequential baseline provides lower overhead for smaller datasets. This is the central trade-off observed in the project.
 
 \end{document}
+
