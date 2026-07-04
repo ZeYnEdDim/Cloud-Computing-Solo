@@ -1,1 +1,0 @@
-/home/hadoop/single_project/scripts/run_sequential_pageviews.sh: line 12: 460411 Killed                  python3 /home/hadoop/single_project/sequential/pageview_sequential.py --input "$INPUT" --output "$OUTPUT" --top-n "$TOP_N"
