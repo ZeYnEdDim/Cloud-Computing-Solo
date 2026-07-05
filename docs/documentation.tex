@@ -108,14 +108,22 @@ The dataset was selected for three main reasons. First, it is a real web dataset
 
 The experiments use consecutive hourly files from one day. The following configurations were used:
 
-\begin{itemize}
-    \item \textbf{1h}: one hourly file;
-    \item \textbf{4h}: four hourly files;
-    \item \textbf{8h}: eight hourly files;
-    \item \textbf{16h}: sixteen hourly files used as a stress test.
-\end{itemize}
+\begin{table}[H]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Subset & Files & Compressed & Decompressed Text & HDFS Storage \\
+\midrule
+1h & 1 & 51.7 MiB & 185.6 MiB & 103.5 MiB \\
+4h & 4 & 199.9 MiB & 723.2 MiB & 399.8 MiB \\
+8h & 8 & 400.6 MiB & 1.42 GiB & 801.3 MiB \\
+16h & 16 & 845.4 MiB & 2.97 GiB & 1.7 GiB \\
+\bottomrule
+\end{tabular}
+\caption{Dataset sizes used in the experiments. HDFS storage includes replication factor 2.}
+\end{table}
 
-Although the original files are compressed, Hadoop processes the decompressed text records. In the 16h stress test, Hadoop counters report more than 100 million input records and several gigabytes of logical data read. Therefore, the workload is appropriate for the required large-dataset evaluation.
+The original files are stored as gzip-compressed Wikimedia hourly dumps. Hadoop stores these compressed files in HDFS, but during MapReduce execution it reads the decompressed text records. Therefore, the decompressed size better represents the logical amount of text processed by the jobs, while the HDFS storage column represents the physical space used by HDFS replication.
 
 During the ETL phase, every valid input line is transformed into a structured record containing:
 
@@ -477,4 +485,5 @@ The reducer benchmark shows that increasing the number of reducers does not auto
 Overall, Hadoop MapReduce provides better robustness for larger workloads, while the sequential baseline provides lower overhead for smaller datasets. This is the central trade-off observed in the project.
 
 \end{document}
+
 

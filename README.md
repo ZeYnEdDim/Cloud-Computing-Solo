@@ -15,6 +15,17 @@ Selected data:
 - Main benchmark subsets: 1h, 4h, and 8h
 - Additional stress test: 16h
 
+Dataset sizes used in the experiments:
+
+| Subset | Hourly files | Compressed size | Decompressed text size | HDFS storage with replication |
+|---|---:|---:|---:|---:|
+| 1h | 1 | 51.7 MiB | 185.6 MiB | 103.5 MiB |
+| 4h | 4 | 199.9 MiB | 723.2 MiB | 399.8 MiB |
+| 8h | 8 | 400.6 MiB | 1.42 GiB | 801.3 MiB |
+| 16h | 16 | 845.4 MiB | 2.97 GiB | 1.7 GiB |
+
+The files are stored as gzip-compressed dumps. Hadoop stores the compressed files in HDFS, but the MapReduce jobs process the decompressed text records. HDFS storage is higher because the cluster uses replication factor 2.
+
 Each input line has the following format:
 
 ```text
@@ -40,12 +51,11 @@ It performs:
 - invalid line filtering;
 - numeric parsing of the view count;
 - extraction of the hour from the input filename;
-- classification of access type as `mobile` or `desktop`;
 - serialization into a SequenceFile intermediate dataset.
 
 ### Job 2 - Aggregation and Ranking
 
-The second job performs distributed analytics using in-mapper combining and reducers. It aggregates page views, ranks the most visited projects and pages, and summarizes traffic by hour and access type.
+The second job performs distributed analytics using in-mapper combining and reducers. It aggregates page views, ranks the most visited projects and pages, and summarizes traffic by hour.
 
 It computes:
 
@@ -53,7 +63,6 @@ It computes:
 - top 10 projects by views;
 - top 10 pages by views;
 - views by hour;
-- mobile vs desktop traffic;
 
 Hadoop features used:
 
@@ -277,5 +286,7 @@ docs/Cloud_Computing_Solo_Project_Presentation.pptx
 ## Main Conclusion
 
 On small and medium datasets, the Python sequential baseline is faster because the single-VM pseudo-distributed Hadoop setup introduces startup, shuffle, and HDFS I/O overhead. However, the 16h stress test shows the scalability limit of the sequential approach: Hadoop completes, while the Python process is killed under memory pressure.
+
+
 
 
