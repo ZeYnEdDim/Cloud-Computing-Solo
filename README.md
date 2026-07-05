@@ -290,3 +290,131 @@ On small and medium datasets, the Python sequential baseline is faster because t
 
 
 
+
+## Live Execution Demo
+
+Use the 1h dataset for the live demo, because it finishes quickly. The larger datasets are used for the benchmark results already reported in the documentation.
+
+### 1. Connect to the VM
+
+```bash
+ssh root@10.1.1.123
+```
+
+Password:
+
+```text
+ubuntu
+```
+
+Switch to the Hadoop user and go to the project root:
+
+```bash
+su - hadoop
+cd /home/hadoop/single_project
+```
+
+### 2. Check Hadoop services
+
+```bash
+jps
+```
+
+Expected main services:
+
+```text
+NameNode
+DataNode
+ResourceManager
+NodeManager
+SecondaryNameNode
+```
+
+If they are not running, start HDFS and YARN:
+
+```bash
+/opt/hadoop/sbin/start-dfs.sh
+/opt/hadoop/sbin/start-yarn.sh
+jps
+```
+
+### 3. Check the input dataset in HDFS
+
+```bash
+/opt/hadoop/bin/hdfs dfs -ls /user/hadoop/single_project/input
+/opt/hadoop/bin/hdfs dfs -ls /user/hadoop/single_project/input/pageviews_1h
+/opt/hadoop/bin/hdfs dfs -du -h /user/hadoop/single_project/input/pageviews_1h
+```
+
+### 4. Clean previous demo output
+
+```bash
+/opt/hadoop/bin/hdfs dfs -rm -r -f \
+  /user/hadoop/single_project/intermediate/demo_1h \
+  /user/hadoop/single_project/output/demo_1h
+```
+
+### 5. Run the Hadoop demo job
+
+Run this command from the project root, `/home/hadoop/single_project`:
+
+```bash
+./scripts/run_hadoop_pageviews.sh \
+  /home/hadoop/single_project/hadoop-pageviews \
+  4 \
+  /user/hadoop/single_project/input/pageviews_1h \
+  /user/hadoop/single_project/intermediate/demo_1h \
+  /user/hadoop/single_project/output/demo_1h \
+  10
+```
+
+The parameters are:
+
+```text
+4                                           number of reducers
+/user/hadoop/single_project/input/pageviews_1h          input dataset
+/user/hadoop/single_project/intermediate/demo_1h        Job 1 intermediate output
+/user/hadoop/single_project/output/demo_1h              Job 2 final output
+10                                          top-N threshold
+```
+
+### 6. Show the Hadoop output
+
+```bash
+/opt/hadoop/bin/hdfs dfs -ls /user/hadoop/single_project/output/demo_1h
+/opt/hadoop/bin/hdfs dfs -cat /user/hadoop/single_project/output/demo_1h/part-r-*
+```
+
+The output contains JSON text with:
+
+- total views;
+- top projects by views;
+- top pages by views;
+- views by hour.
+
+### 7. Optional sequential baseline demo
+
+```bash
+./scripts/run_sequential_pageviews.sh \
+  /home/hadoop/single_project/data/pageviews_1h \
+  /home/hadoop/single_project/results/demo_sequential_1h.json \
+  10
+
+cat /home/hadoop/single_project/results/demo_sequential_1h.json
+```
+
+### Common mistake
+
+If this error appears:
+
+```text
+./scripts/run_hadoop_pageviews.sh: No such file or directory
+```
+
+it means the command was launched from the wrong folder. Go back to the project root first:
+
+```bash
+cd /home/hadoop/single_project
+```
+
+Then run the script again.
