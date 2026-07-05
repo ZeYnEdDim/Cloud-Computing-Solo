@@ -394,6 +394,18 @@ The output contains JSON text with:
 
 ### 7. Optional sequential baseline demo
 
+The sequential script reads from the local filesystem, not from HDFS. If the local 1h folder does not exist, copy the 1h input from HDFS first:
+
+```bash
+mkdir -p /home/hadoop/single_project/data/pageviews_1h
+
+/opt/hadoop/bin/hdfs dfs -get \
+  /user/hadoop/single_project/input/pageviews_1h/pageviews-20260501-000000.gz \
+  /home/hadoop/single_project/data/pageviews_1h/
+```
+
+Then run the sequential demo:
+
 ```bash
 ./scripts/run_sequential_pageviews.sh \
   /home/hadoop/single_project/data/pageviews_1h \
@@ -402,6 +414,16 @@ The output contains JSON text with:
 
 cat /home/hadoop/single_project/results/demo_sequential_1h.json
 ```
+
+If the JSON output contains `"total_views": 0`, it usually means the local input folder is missing or empty.
+
+You do not need to delete `/home/hadoop/single_project/data/pageviews_1h` before running the sequential demo again. It can stay there. If you want to save disk space after the demo, it is safe to remove only the local copy:
+
+```bash
+rm -rf /home/hadoop/single_project/data/pageviews_1h
+```
+
+Do not remove the HDFS input unless you intentionally want to delete the dataset from Hadoop.
 
 ### Common mistake
 
@@ -418,3 +440,4 @@ cd /home/hadoop/single_project
 ```
 
 Then run the script again.
+
